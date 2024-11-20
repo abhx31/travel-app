@@ -13,13 +13,146 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  username String
-  email String @unique
-  password String
+model User {
+  id        String   @id @default(uuid())
+  username  String
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Relations
+  hostedTrips   Trip[]       // Trips hosted by the user
+  tripMembers   TripMember[] // Trips joined as a member
+  paidExpenses  Expense[]    // Expenses paid by the user
+
   @@map("users")
+}
+
+model Trip {
+  id          String   @id @default(uuid())
+  hostId      String
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  status      TripStatus
+  totalBudget Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  host           User            @relation(fields: [hostId], references: [id])
+  members        TripMember[]
+  destinations   Destination[]
+  accommodations Accommodation[]
+  activities     Activity[]
+  expenses       Expense[]
+
+  @@map("trips")
+}
+
+model TripMember {
+  id        String     @id @default(uuid())
+  tripId    String
+  userId    String
+  role      MemberRole
+  joinedAt  DateTime   @default(now())
+
+  // Relations
+  trip      Trip       @relation(fields: [tripId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+
+  @@map("trip_members")
+}
+
+model Destination {
+  id            String   @id @default(uuid())
+  tripId        String
+  placeName     String
+  country       String
+  description   String?
+  voteCount     Int      @default(0)
+  images        String[]   // Array of image URLs
+  estimatedCost Int
+  proposedAt    DateTime @default(now())
+
+  // Relations
+  trip           Trip            @relation(fields: [tripId], references: [id])
+  accommodations Accommodation[]
+  activities     Activity[]
+
+  @@map("destinations")
+}
+
+model Accommodation {
+  id              String   @id @default(uuid())
+  tripId          String
+  destinationId   String
+  name            String
+  type            String
+  pricePerNight   Int
+  totalRooms      Int
+  amenities       String[]    // Array of amenities
+  images          String[]    // Array of image URLs
+  voteCount       Int      @default(0)
+  checkIn         DateTime
+  checkOut        DateTime
+
+  // Relations
+  trip            Trip        @relation(fields: [tripId], references: [id])
+  destination     Destination @relation(fields: [destinationId], references: [id])
+
+  @@map("accommodations")
+}
+
+model Activity {
+  id              String   @id @default(uuid())
+  tripId          String
+  destinationId   String
+  name            String
+  description     String?
+  estimatedCost   Int
+  plannedDate     DateTime
+  images          String[]    // Array of image URLs
+  voteCount       Int      @default(0)
+  durationMinutes Int
+
+  // Relations
+  trip            Trip        @relation(fields: [tripId], references: [id])
+  destination     Destination @relation(fields: [destinationId], references: [id])
+
+  @@map("activities")
+}
+
+model Expense {
+  id            String   @id @default(uuid())
+  tripId        String
+  paidByUserId  String
+  category      String
+  amount        Float
+  currency      String
+  description   String?
+  splitAmong    String[]    // Array of user IDs and their share
+  expenseDate   DateTime
+  isSettled     Boolean  @default(false)
+
+  // Relations
+  trip          Trip     @relation(fields: [tripId], references: [id])
+  paidByUser    User     @relation(fields: [paidByUserId], references: [id])
+
+  @@map("expenses")
+}
+
+enum TripStatus {
+  PLANNING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum MemberRole {
+  HOST
+  MEMBER
 }

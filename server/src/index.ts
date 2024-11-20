@@ -1,5 +1,5 @@
 import express from 'express';
-import authRouter from './routes/authRoutes';
+import authRouter from './routes/auth.routes';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 

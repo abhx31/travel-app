@@ -14,7 +14,7 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
     }
 
     const decode = jwt.verify(token, process.env.JWT_SECRET!) as { userId: number };
-    const user = await User.findUnique({ where: { id: decode.userId } });
+    const user = await User.findUnique({ where: { id: decode.userId.toString() } });
 
     if (!user) {
       return res.status(401).json({ msg: 'Invalid token, user not found' });
