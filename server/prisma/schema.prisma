@@ -24,7 +24,6 @@ model User {
   // Relations
   hostedTrips   Trip[]       // Trips hosted by the user
   tripMembers   TripMember[] // Trips joined as a member
-  paidExpenses  Expense[]    // Expenses paid by the user
 
   @@map("users")
 }
@@ -128,18 +127,15 @@ model Activity {
 model Expense {
   id            String   @id @default(uuid())
   tripId        String
-  paidByUserId  String
   category      String
   amount        Float
   currency      String
   description   String?
-  splitAmong    String[]    // Array of user IDs and their share
   expenseDate   DateTime
   isSettled     Boolean  @default(false)
 
   // Relations
   trip          Trip     @relation(fields: [tripId], references: [id])
-  paidByUser    User     @relation(fields: [paidByUserId], references: [id])
 
   @@map("expenses")
 }

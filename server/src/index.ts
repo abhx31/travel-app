@@ -3,6 +3,7 @@ import authRouter from './routes/auth.routes';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 import tripRouter from './routes/trip.routes';
+import userRouter from './routes/user.routes';
 
 const app = express();
 require("dotenv").config();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/trip', tripRouter);
+app.use('/api/v1/user', userRouter);
 
 
 app.listen(process.env.PORT, ()=>{

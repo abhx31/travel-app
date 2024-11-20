@@ -12,7 +12,7 @@ export const createTrip = async(req: AuthenticatedRequest, res: Response) =>{
             startDate,
             endDate,
             totalBudget,  
-            hostId    
+            hostId   
         } = req.body;
         
         const trip = await prisma.trip.create({
@@ -116,12 +116,10 @@ export const createExpense = async (req: AuthenticatedRequest, res: Response) =>
         const expense = await prisma.expense.create({
             data: {
                 tripId,
-                paidByUserId,
                 category,
                 amount,
                 currency,
                 description,
-                splitAmong,
                 expenseDate: new Date(expenseDate),
             },
         });
