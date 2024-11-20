@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { forgotPasswordSchema, resetPasswordSchema, signinSchema, signupSchema } from "../schema";
 import { sendEmail } from "../utils/email"
