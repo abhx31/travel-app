@@ -1,0 +1,25 @@
+{
+  "name": "@abhiram2k03/input-validation",
+  "version": "1.4.0",
+  "description": "",
+  "main": "dist/index.js",
+  "repository": {
+    "url": "https://github.com/saiabhiramjaini/-abhiram2k03-input-validation.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "input",
+    "validation",
+    "zod",
+    "forms",
+    "signin",
+    "login"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}
