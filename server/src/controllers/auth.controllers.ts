@@ -37,7 +37,7 @@ export const signup = async (req: Request, res: Response)=>{
         const token = jwt.sign({ userId: saveUser.id }, process.env.JWT_SECRET!, { expiresIn: "1d" });
         res.cookie('token', token, { httpOnly: true });
         
-        return res.json({msg: "User created Successfully"})
+        return res.json({msg: "User created Successfully", token})
     }
     catch (error: any) {
         if (error.errors && error.errors[0].message) {
@@ -70,7 +70,7 @@ export const signin = async (req: Request, res: Response)=>{
 
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
         res.cookie('token', token, { httpOnly: true });
-        return res.json({msg: "Signin successful"})
+        return res.json({msg: "Signin successful", token})
     }
     catch (error: any) {
         if (error.errors && error.errors[0].message) {
